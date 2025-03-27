@@ -1,10 +1,10 @@
-import argparse
 import os
 from datetime import datetime, timedelta
 
 from ai.base_adapter import AIAdapter
 from config import Config
 from ai.gemini import GeminiAdapter
+from args_handler import ArgumentParser
 
 
 class WeeklySummarizer:
@@ -73,15 +73,10 @@ class WeeklySummarizer:
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-r", "--reports-dir",
-        help="Diretório com os relatórios diários",
-        type=str,
-        required=True,
-    )
-    args = parser.parse_args()
-
+    # Parse arguments using the class-based ArgumentParser
+    args_parser = ArgumentParser()
+    args = args_parser.parse()
+    
     ai = GeminiAdapter(
         system_instruction=(
             "You are a helpful assistant that summarizes weekly reports "
@@ -90,19 +85,27 @@ def main():
     )
     summarizer = WeeklySummarizer(args.reports_dir, ai)
 
-    # Gera resumo para a semana atual
-    weekly_summary = summarizer.generate_weekly_summary()
+    # Gera resumo para a semana especificada ou atual
+    weekly_summary = summarizer.generate_weekly_summary(args.end_date)
 
     if weekly_summary:
+        # Determina a extensão do arquivo baseado no formato especificado
+        file_extension = args.format
+        
         # Salvar resumo em um arquivo
         output_file = os.path.join(
-            args.reports_dir,
-            f'resumo_semanal_{datetime.now().strftime("%Y-%m-%d")}.txt'
+            args.output_dir,
+            'resumo_semanal_'
+            f'{datetime.now().strftime("%Y-%m-%d")}'
+            f'.{file_extension}'
         )
         with open(output_file, "w", encoding="utf-8") as f:
             f.write(weekly_summary)
 
         print(f"[+] Resumo semanal gerado em {output_file}")
+    
+    if args.verbose:
+        print("[i] Processamento concluído com sucesso.")
 
 
 if __name__ == "__main__":

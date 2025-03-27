@@ -50,8 +50,33 @@ DEBUG=True  # Optional
 
 ### Usage
 
+Basic usage:
 ```bash
-python weekly_summarizer.py
+python main.py -r /path/to/reports
+```
+
+Available options:
+```
+-r, --reports-dir    Directory containing daily report files (required)
+-o, --output-dir     Directory for saving the summary (defaults to reports-dir)
+-d, --end-date       End date for the week (format: YYYY-MM-DD)
+-f, --format         Output format: txt or md (default: txt)
+-v, --verbose        Enable verbose output
+```
+
+Examples:
+```bash
+# Generate summary for the current week
+python main.py -r ./reports
+
+# Generate summary with markdown format
+python main.py -r ./reports -f md
+
+# Generate summary for a specific week (ending on June 16, 2024)
+python main.py -r ./reports -d 2024-06-16
+
+# Save summary to a different directory
+python main.py -r ./reports -o ./summaries
 ```
 
 ## 📋 Example
@@ -112,7 +137,9 @@ Customize the summarizer through:
 
 ## ✅ TODO
 
-- [ ] Make the structure flexible and user-friendly via terminal.
+- [x] Make the structure flexible and user-friendly via terminal.
+- [ ] Add support for custom output templates
+- [ ] Implement batch processing for multiple weeks
 
 ## 🤝 Contributing
 
