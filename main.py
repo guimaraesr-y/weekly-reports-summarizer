@@ -32,7 +32,9 @@ class WeeklySummarizer:
             try:
                 if os.path.exists(report_path):
                     with open(report_path, "r", encoding="utf-8") as file:
-                        weekly_reports.append(f'{report_filename}\n{file.read()}')
+                        weekly_reports.append(
+                            f'{report_filename}\n{file.read()}'
+                        )
             except Exception as e:
                 print(f"Erro ao ler {report_path}: {e}")
 
@@ -49,13 +51,15 @@ class WeeklySummarizer:
         weekly_content = self._get_weekly_reports(end_date)
 
         prompt = f"""
-        Analise os seguintes relatórios diários e gere um resumo pequeno e simplificado:
+        Analise os seguintes relatórios diários e gere um resumo
+        pequeno e simplificado:
         1. Atividades na semana
         2. Resolução de bugs
         3. Trabalhando em features
 
-        Seja claro e direto, utilize pontos para destacar as principais informações importantes.
-        Replique o formato de fala dos relatórios.
+        Seja claro e direto, utilize pontos para destacar
+        as principais informações importantes.
+        Replique o formato de como eu falo nos relatórios.
 
         Relatórios:
         {weekly_content}
@@ -83,7 +87,8 @@ def main():
     if weekly_summary:
         # Salvar resumo em um arquivo
         output_file = os.path.join(
-            reports_dir, f'resumo_semanal_{datetime.now().strftime("%Y-%m-%d")}.txt'
+            reports_dir,
+            f'resumo_semanal_{datetime.now().strftime("%Y-%m-%d")}.txt'
         )
         with open(output_file, "w", encoding="utf-8") as f:
             f.write(weekly_summary)
@@ -94,12 +99,18 @@ def main():
 if __name__ == "__main__":
     print(
         """
-     _      _ _ _  __        __         _     _ _ _ 
-    | |    | | | |/  |      /  |       | |   | | | |
-    | |__  | | |   \ |     / /\ \      | |__ | | | |
-    | '_ \ | | | |\  |    / /  \ \     | '_ \| | | |
-    | |_) || |_| | | |   / /    \ \    | |_) | |_|_|
-    |_.__/  \___|_| |_| /_/      \_\   |_.__/ \___(_)
+    ██╗    ██╗███████╗███████╗██╗  ██╗██╗  ██╗   ██╗
+    ██║    ██║██╔════╝██╔════╝██║ ██╔╝██║  ╚██╗ ██╔╝
+    ██║ █╗ ██║█████╗  █████╗  █████╔╝ ██║   ╚████╔╝
+    ██║███╗██║██╔══╝  ██╔══╝  ██╔═██╗ ██║    ╚██╔╝
+    ╚███╔███╔╝███████╗███████╗██║  ██╗███████╗██║
+    ╚══╝╚══╝ ╚══════╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝
+    ██████╗ ███████╗██████╗  ██████╗ ██████╗ ████████╗███████╗
+    ██╔══██╗██╔════╝██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝██╔════╝
+    ██████╔╝█████╗  ██████╔╝██║   ██║██████╔╝   ██║   ███████╗
+    ██╔══██╗██╔══╝  ██╔═══╝ ██║   ██║██╔══██╗   ██║   ╚════██║
+    ██║  ██║███████╗██║     ╚██████╔╝██║  ██║   ██║   ███████║
+    ╚═╝  ╚═╝╚══════╝╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝
 
     Versão 0.1.0
 
