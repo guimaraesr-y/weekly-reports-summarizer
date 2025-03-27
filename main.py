@@ -1,3 +1,4 @@
+import argparse
 import os
 from datetime import datetime, timedelta
 
@@ -72,14 +73,22 @@ class WeeklySummarizer:
 
 
 def main():
-    reports_dir = "/mnt/c/Users/ryans/Documents/Obsidian/Diary/"
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-r", "--reports-dir",
+        help="Diretório com os relatórios diários",
+        type=str,
+        required=True,
+    )
+    args = parser.parse_args()
+
     ai = GeminiAdapter(
         system_instruction=(
             "You are a helpful assistant that summarizes weekly reports "
             "in Portuguese."
         )
     )
-    summarizer = WeeklySummarizer(reports_dir, ai)
+    summarizer = WeeklySummarizer(args.reports_dir, ai)
 
     # Gera resumo para a semana atual
     weekly_summary = summarizer.generate_weekly_summary()
@@ -87,7 +96,7 @@ def main():
     if weekly_summary:
         # Salvar resumo em um arquivo
         output_file = os.path.join(
-            reports_dir,
+            args.reports_dir,
             f'resumo_semanal_{datetime.now().strftime("%Y-%m-%d")}.txt'
         )
         with open(output_file, "w", encoding="utf-8") as f:
