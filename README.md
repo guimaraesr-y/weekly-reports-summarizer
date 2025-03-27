@@ -1,12 +1,16 @@
 # 📝 Weekly Reports Summarizer 
 
+![Weekly Reports Summarizer](docs/hero.png)
+
+<div align="center">
+  <img src="https://img.shields.io/badge/version-0.1.0-blue.svg" alt="Project Banner" />
+  <img src="https://img.shields.io/badge/python-3.8+-green.svg" alt="Python" />
+  <img src="https://img.shields.io/badge/AI-Gemini-orange.svg" alt="AI Powered" />
+</div>
+
 ## 🌟 Overview
 
 A powerful, intelligent weekly report summarization tool that transforms daily markdown reports into concise, insightful weekly summaries using AI technology.
-
-![Project Banner](https://img.shields.io/badge/version-0.1.0-blue.svg)
-![Python](https://img.shields.io/badge/python-3.8+-green.svg)
-![AI Powered](https://img.shields.io/badge/AI-Gemini-orange.svg)
 
 ## ✨ Features
 
@@ -50,6 +54,55 @@ DEBUG=True  # Optional
 python weekly_summarizer.py
 ```
 
+## 📋 Example
+
+### Input: Daily Reports (Multiple markdown files)
+
+```markdown
+# Daily Report - 12/06/2024
+
+- Started implementing new user authentication flow
+- Fixed login page layout issues on mobile devices
+- Attended team planning meeting
+- Researched potential libraries for PDF generation
+```
+
+```markdown
+# Daily Report - 14/06/2024
+
+- Completed authentication flow implementation
+- Created unit tests for new authentication components
+- Started documentation for the new feature
+- Helped QA team with bug reproduction steps
+```
+
+### Output: Weekly Summary
+
+```markdown
+## Relatório Semanal Simplificado (12/06 a 16/06)
+
+**1. Atividades na Semana:**
+
+*   Foco principal na implementação do novo fluxo de autenticação, incluindo implementação completa e testes unitários.
+*   Correção de problemas de layout na página de login em dispositivos móveis.
+*   Início da documentação para a nova funcionalidade.
+*   Participação em reunião de planejamento da equipe.
+*   Pesquisa de bibliotecas para geração de PDF.
+
+**2. Resolução de Bugs:**
+
+*   Corrigido problema de layout na página de login em dispositivos móveis.
+*   Auxiliou equipe de QA com passos para reprodução de bugs.
+
+**3. Trabalhando em Features:**
+
+*   Fluxo de autenticação de usuários concluído e testado.
+*   Documentação da nova funcionalidade em andamento.
+*   Pesquisa para implementação de geração de PDF iniciada.
+
+**Observações:** Houve boa colaboração com a equipe de QA para identificação e solução de problemas. A implementação do fluxo de autenticação foi concluída dentro do prazo previsto.
+```
+
 ## 🔧 Configuration
 
 Customize the summarizer through:
@@ -57,7 +110,7 @@ Customize the summarizer through:
 - Modify `ai/gemini.py` for different AI instructions
 - Adjust `_get_weekly_reports()` method for specific report structures
 
-## 📋 TODO
+## ✅ TODO
 
 - [ ] Make the structure flexible and user-friendly via terminal.
 
