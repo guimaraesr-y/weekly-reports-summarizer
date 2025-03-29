@@ -1,10 +1,10 @@
 import os
 from datetime import datetime, timedelta
 
-from ai.base_adapter import AIAdapter
-from config import Config
-from ai.gemini import GeminiAdapter
-from args_handler import ArgumentParser
+from src.ai.adapters.base import AIAdapter
+from src.config.settings import Config
+from src.ai.adapters.gemini import GeminiAdapter
+from src.utils.args_handler import ArgumentParser
 
 
 class WeeklySummarizer:
@@ -76,7 +76,7 @@ def main():
     # Parse arguments using the class-based ArgumentParser
     args_parser = ArgumentParser()
     args = args_parser.parse()
-    
+
     ai = GeminiAdapter(
         system_instruction=(
             "You are a helpful assistant that summarizes weekly reports "
@@ -91,7 +91,7 @@ def main():
     if weekly_summary:
         # Determina a extensão do arquivo baseado no formato especificado
         file_extension = args.format
-        
+
         # Salvar resumo em um arquivo
         output_file = os.path.join(
             args.output_dir,
@@ -103,7 +103,7 @@ def main():
             f.write(weekly_summary)
 
         print(f"[+] Resumo semanal gerado em {output_file}")
-    
+
     if args.verbose:
         print("[i] Processamento concluído com sucesso.")
 

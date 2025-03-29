@@ -41,7 +41,7 @@ class ArgumentParser:
 
         self.parser.add_argument(
             "-o",
-            "--output-dir", 
+            "--output-dir",
             help=(
                 "Directory for saving the generated summary "
                 "(defaults to reports-dir if not specified)"
@@ -52,7 +52,7 @@ class ArgumentParser:
 
         self.parser.add_argument(
             "-d",
-            "--end-date", 
+            "--end-date",
             help=(
                 "End date for the weekly summary (format: YYYY-MM-DD). "
                 "Defaults to the most recent Sunday"
@@ -86,7 +86,6 @@ class ArgumentParser:
         """
         args = self.parser.parse_args()
 
-        # Process the end date if provided
         end_date = None
         if args.end_date:
             try:
@@ -94,7 +93,6 @@ class ArgumentParser:
             except ValueError:
                 self.parser.error("End date must be in the format YYYY-MM-DD")
 
-        # If output directory is not specified, use reports directory
         output_dir = args.output_dir if args.output_dir else args.reports_dir
 
         return Args(
