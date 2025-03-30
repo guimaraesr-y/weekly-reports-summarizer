@@ -13,15 +13,17 @@ class WeeklySummarizer:
         self.reports_directory = reports_directory
         self._ai = ai
 
-    def _get_weekly_reports(self, end_date):
+    def _get_weekly_reports(self, start_date, end_date):
         """
         Coleta todos os relatórios de uma semana específica.
         Formato dos arquivos: YYYY-MM-DD.md em uma única pasta.
         """
-        start_date = end_date - timedelta(days=7)
         weekly_reports = []
 
-        date_range = [start_date + timedelta(days=x) for x in range(7)]
+        date_range = [
+            start_date + timedelta(days=x)
+            for x in range((end_date - start_date).days + 1)
+        ]
 
         for date in date_range:
             report_filename = f"{date.strftime('%Y-%m-%d')}.md"
@@ -38,15 +40,16 @@ class WeeklySummarizer:
 
         return "\n\n".join(weekly_reports)
 
-    def generate_weekly_summary(self, end_date=None):
+    def generate_weekly_summary(self, start_date=None, end_date=None):
         """
-        Gera um resumo semanal usando Ollama.
+        Generates a summary of a week of reports.
         """
-        if end_date is None:
-            today = datetime.now()
-            end_date = today - timedelta(days=today.weekday())
+        if not start_date:
+            start_date = self._get_last_week_start()
+        if not end_date:
+            end_date = self._get_last_week_end()
 
-        weekly_content = self._get_weekly_reports(end_date)
+        weekly_content = self._get_weekly_reports(start_date, end_date)
 
         prompt = f"""
         Analise os seguintes relatórios diários e gere um resumo
@@ -67,3 +70,18 @@ class WeeklySummarizer:
             print("[DEBUG] PROMPT:\n\n" + prompt)
 
         return self._ai.generate_content(prompt)
+
+    def _get_last_week_start(self):
+        """
+        Returns the start of last week (Sunday)
+        """
+        last_week = datetime.now() - timedelta(days=7)
+        last_week_sunday = last_week - timedelta(days=last_week.weekday() + 1)
+        return last_week_sunday
+
+    def _get_last_week_end(self):
+        """
+        Returns the end of last week (Saturday)
+        """
+        last_week_start = self._get_last_week_start()
+        return last_week_start + timedelta(days=6)

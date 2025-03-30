@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from unittest.mock import patch, MagicMock
 
+from freezegun import freeze_time
 import pytest
 from src.ai.services.summarizer import WeeklySummarizer
 from src.ai.adapters.base import AIAdapter
@@ -31,10 +32,23 @@ class TestWeeklySummarizer:
         assert self.summarizer.reports_directory == str(self.reports_dir)
         assert self.summarizer._ai == self.mock_ai
 
+    @freeze_time("2025-03-25")
+    def test_get_last_week_start(self):
+        """Test _get_last_week_start method."""
+        last_week_start = datetime.strptime("2025-03-16", "%Y-%m-%d")
+        assert self.summarizer._get_last_week_start() == last_week_start
+
+    @freeze_time("2025-03-25")
+    def test_get_last_week_end(self):
+        """Test _get_last_week_end method."""
+        last_week_end = datetime.strptime("2025-03-22", "%Y-%m-%d")
+        assert self.summarizer._get_last_week_end() == last_week_end
+
     def test_get_weekly_reports_empty_directory(self):
         """Test _get_weekly_reports with empty directory."""
+        start_date = datetime(2024, 3, 7)
         end_date = datetime(2024, 3, 14)  # Friday
-        reports = self.summarizer._get_weekly_reports(end_date)
+        reports = self.summarizer._get_weekly_reports(start_date, end_date)
         assert reports == ""
 
     def test_get_weekly_reports_with_files(self):
@@ -50,14 +64,13 @@ class TestWeeklySummarizer:
             report_file = self.reports_dir / f"{date.strftime('%Y-%m-%d')}.md"
             report_file.write_text(f"Report for {date.strftime('%Y-%m-%d')}")
 
-        reports = self.summarizer._get_weekly_reports(end_date)
+        reports = self.summarizer._get_weekly_reports(start_date, end_date)
         assert len(reports.split("\n\n")) == 5  # Should have 5 reports
 
-    @pytest.mark.skip()  # Gotta fix this test with the main logic
     def test_get_weekly_reports_with_missing_files(self):
         """Test _get_weekly_reports with some missing files."""
         end_date = datetime(2024, 3, 14)  # Friday
-        start_date = end_date - timedelta(days=6)  # Saturday
+        start_date = end_date - timedelta(days=5)  # Sunday
 
         # Create only some report files
         dates_to_create = [start_date, start_date + timedelta(days=2),
@@ -67,7 +80,7 @@ class TestWeeklySummarizer:
             report_file = self.reports_dir / f"{date.strftime('%Y-%m-%d')}.md"
             report_file.write_text(f"Report for {date.strftime('%Y-%m-%d')}")
 
-        reports = self.summarizer._get_weekly_reports(end_date)
+        reports = self.summarizer._get_weekly_reports(start_date, end_date)
         assert len(reports.split("\n\n")) == 4  # Should have 4 reports
 
     def test_generate_weekly_summary_with_end_date(self):

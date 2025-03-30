@@ -18,7 +18,9 @@ def main():
     )
     summarizer = WeeklySummarizer(args.reports_dir, ai)
 
-    weekly_summary = summarizer.generate_weekly_summary(args.end_date)
+    weekly_summary = summarizer.generate_weekly_summary(
+        args.start_date, args.end_date
+    )
 
     if weekly_summary:
         file_extension = args.format

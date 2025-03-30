@@ -8,3 +8,4 @@ pytest-mock==3.12.0
 # Linting e Formatação
 flake8==7.0.0
 autopep8==2.0.4 
+freezegun==1.5.1
