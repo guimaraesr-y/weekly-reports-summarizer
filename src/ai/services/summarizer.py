@@ -76,7 +76,8 @@ class WeeklySummarizer:
         Returns the start of last week (Sunday)
         """
         last_week = datetime.now() - timedelta(days=7)
-        last_week_sunday = last_week - timedelta(days=last_week.weekday() + 1)
+        week_day_cycle = (last_week.weekday() + 1) % 7
+        last_week_sunday = last_week - timedelta(days=week_day_cycle)
         return last_week_sunday
 
     def _get_last_week_end(self):

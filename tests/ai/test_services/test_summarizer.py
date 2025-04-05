@@ -32,17 +32,25 @@ class TestWeeklySummarizer:
         assert self.summarizer.reports_directory == str(self.reports_dir)
         assert self.summarizer._ai == self.mock_ai
 
-    @freeze_time("2025-03-25")
-    def test_get_last_week_start(self):
+    @pytest.mark.parametrize("freezed_date", [
+        "2025-03-23", "2025-03-24", "2025-03-25", "2025-03-26", "2025-03-27",
+        "2025-03-28", "2025-03-29"
+    ])
+    def test_get_last_week_start(self, freezed_date):
         """Test _get_last_week_start method."""
         last_week_start = datetime.strptime("2025-03-16", "%Y-%m-%d")
-        assert self.summarizer._get_last_week_start() == last_week_start
+        with freeze_time(freezed_date):
+            assert self.summarizer._get_last_week_start() == last_week_start
 
-    @freeze_time("2025-03-25")
-    def test_get_last_week_end(self):
+    @pytest.mark.parametrize("freezed_date", [
+        "2025-03-23", "2025-03-24", "2025-03-25", "2025-03-26", "2025-03-27",
+        "2025-03-28", "2025-03-29"
+    ])
+    def test_get_last_week_end(self, freezed_date):
         """Test _get_last_week_end method."""
         last_week_end = datetime.strptime("2025-03-22", "%Y-%m-%d")
-        assert self.summarizer._get_last_week_end() == last_week_end
+        with freeze_time(freezed_date):
+            assert self.summarizer._get_last_week_end() == last_week_end
 
     def test_get_weekly_reports_empty_directory(self):
         """Test _get_weekly_reports with empty directory."""
