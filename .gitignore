@@ -22,3 +22,5 @@ instance
 .vscode
 
 .env
+
+.python-version
