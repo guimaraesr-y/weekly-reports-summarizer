@@ -1,4 +1,4 @@
-.PHONY: install install-dev format lint test coverage clean help
+.PHONY: install install-dev format lint test coverage coverage-html check clean venv run
 
 # Variables
 PYTHON = python
@@ -14,7 +14,11 @@ RESET = \033[0m
 
 help: ## Shows this help message
 	@echo "$(BLUE)Available commands:$(RESET)"
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "$(GREEN)%-20s$(RESET) %s\n", $$1, $$2}'
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "$(GREEN)%-20s$(RESET) %s\n", $1, $2}'
+
+run: ## Runs the application
+	@echo "$(BLUE)Running the application...$(RESET)"
+	$(PYTHON) run.py
 
 install: ## Installs production dependencies
 	@echo "$(BLUE)Installing production dependencies...$(RESET)"
@@ -30,7 +34,7 @@ format: ## Formats code using autopep8 (according to PEP 8)
 
 lint: ## Runs flake8 linter
 	@echo "$(BLUE)Checking code style...$(RESET)"
-	flake8 $(SRC) $(TESTS)
+	@flake8 $(SRC) $(TESTS)
 
 test: ## Runs tests
 	@echo "$(BLUE)Running tests...$(RESET)"
@@ -67,4 +71,4 @@ venv: ## Creates a virtual environment
 	@echo "$(BLUE)Creating virtual environment...$(RESET)"
 	$(PYTHON) -m venv $(VENV)
 	@echo "$(GREEN)Virtual environment created at $(VENV)$(RESET)"
-	@echo "$(BLUE)Activate virtual environment with: source $(VENV)/Scripts/activate (Windows) or source $(VENV)/bin/activate (Unix)$(RESET)"
+	@echo "$(BLUE)Activate your virtual environment with: source $(VENV)/bin/activate (Unix) or $(VENV)\Scripts\activate (Windows)$(RESET)"
